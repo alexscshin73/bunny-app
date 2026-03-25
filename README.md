@@ -1,5 +1,10 @@
 # bunny-app
 
+## Live Service
+
+- Open Bunny now: https://bunny.carroamix.com
+- Browser room client: https://bunny.carroamix.com/
+
 `bunny-app` is a new service layer built by copying the reusable MVP pieces from `bunny2` while keeping `bunny2` intact.
 
 ## Product Goal
