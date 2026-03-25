@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "Bunny App",
+    "slug": "bunny-app-mobile",
+    "scheme": "bunnyapp",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#f4ede0"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.bunnyapp.mobile"
+    },
+    "android": {
+      "package": "com.bunnyapp.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#f4ede0"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Allow Bunny App to access your microphone for realtime bilingual conversation."
+        }
+      ],
+      "expo-notifications"
+    ]
+  }
+}

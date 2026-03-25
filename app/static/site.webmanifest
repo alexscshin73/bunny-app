@@ -1,0 +1,16 @@
+{
+  "name": "Bunny AI",
+  "short_name": "Bunny",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6efe4",
+  "theme_color": "#f6efe4",
+  "icons": [
+    {
+      "src": "/static/bunny-ai-header-v7.png",
+      "sizes": "760x760",
+      "type": "image/png"
+    }
+  ]
+}

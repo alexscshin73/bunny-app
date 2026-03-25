@@ -1,0 +1,52 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bunny-app-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      BUNNY_HOST: 0.0.0.0
+      BUNNY_PORT: 8000
+      BUNNY_ASR_ENGINE: mock
+      BUNNY_TRANSLATION_ENGINE: mock
+      BUNNY_TRANSLATION_TARGETS: '["ko","es"]'
+      BUNNY_ROOM_STORE_BACKEND: postgres
+      BUNNY_ROOM_STORE_URL: postgresql://postgres:postgres@postgres:5432/bunny_app
+      BUNNY_ROOM_TTL_MINUTES: 1440
+      BUNNY_ROOM_CLEANUP_INTERVAL_SECONDS: 300
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: bunny-app-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bunny_app
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bunny_app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - bunny_app_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  bunny_app_postgres_data:

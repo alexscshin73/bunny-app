@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+    <title>Bunny App Realtime Room Demo</title>
+    <meta name="description" content="Bunny AI realtime room for Korean and Spanish conversation. Invited guests can open the shared room link and join right away." />
+    <meta name="theme-color" content="#f6efe4" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Bunny AI" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bunny AI" />
+    <meta property="og:description" content="Open the Bunny AI room link and join the shared conversation." />
+    <meta property="og:url" content="https://bunny.carroamix.com/" />
+    <meta property="og:image" content="https://bunny.carroamix.com/static/bunny-share-card.png?v=20260323-ui-service-153" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bunny AI" />
+    <meta name="twitter:description" content="Open the Bunny AI room link and join the shared conversation." />
+    <meta name="twitter:image" content="https://bunny.carroamix.com/static/bunny-share-card.png?v=20260323-ui-service-153" />
+    <link rel="manifest" href="/static/site.webmanifest?v=20260323-ui-service-153" />
+    <link rel="apple-touch-icon" href="/static/bunny-ai-header-v7.png" />
+    <link rel="stylesheet" href="/static/styles.css?v=20260323-ui-service-153" />
+  </head>
+  <body>
+    <main class="shell">
+      <section id="authScreen" class="auth-screen">
+        <section class="account-shell">
+          <div class="auth-hero">
+            <a href="/" class="auth-hero__home-link" title="Home" aria-label="Home">
+              <div class="auth-hero__logo-frame">
+                <img src="/static/bunny1.png?v=20260323-ui-service-153" alt="Bunny AI" class="auth-hero__logo" />
+              </div>
+            </a>
+            <div id="authHeroCopy" class="auth-hero__copy">
+              <span>Bunny is 1st MVP of Alex!</span>
+              <span>Not enough? Jump in and fix it yourself!</span>
+            </div>
+          </div>
+          <div id="authGuestShell" class="account-auth">
+            <form id="loginForm" class="account-card account-card--auth">
+              <div class="account-form">
+                <div class="phone-input-row">
+                  <select id="loginCountryCodeSelect" class="country-code-select" aria-label="Country code">
+                    <option value="+52" selected>+52 MX</option>
+                    <option value="+82">+82 KR</option>
+                    <option value="+1">+1 US</option>
+                    <option value="+34">+34 ES</option>
+                  </select>
+                  <input id="loginPhoneInput" type="tel" maxlength="24" placeholder="전화번호 / Telefono" autocomplete="tel-national" />
+                </div>
+                <input id="loginPasswordInput" type="password" maxlength="128" placeholder="비밀번호 / Contrasena" autocomplete="current-password" />
+                <button id="loginButton" type="submit" class="button-secondary auth-action-button">로그인 / Entrar</button>
+                <div class="auth-guest-copy">
+                  <span>가입시 상세 기능 활용 가능</span>
+                  <span>Funciones completas con registro</span>
+                </div>
+                <button id="showRegisterButton" type="button" class="button-secondary auth-action-button">회원가입/Registro</button>
+                <div class="auth-guest-copy">
+                  <span>체험시 Guest 입장</span>
+                  <span>Probar como invitado</span>
+                </div>
+                <button id="continueGuestButton" type="button" class="button-secondary auth-action-button">Guest Mode</button>
+              </div>
+            </form>
+            <p class="auth-copyright">All rights are reserved. © Alex sc SHIN</p>
+
+            <form id="registerForm" class="account-card account-card--auth" hidden>
+              <div class="account-card__header">
+                <p class="eyebrow">Sign Up</p>
+                <h2 class="account-card__title">회원가입 / Registro</h2>
+              </div>
+              <div class="account-form">
+                <input id="registerNameInput" type="text" maxlength="40" placeholder="이름 / Nombre" autocomplete="name" />
+                <div class="phone-input-row">
+                  <select id="registerCountryCodeSelect" class="country-code-select" aria-label="Country code">
+                    <option value="+52" selected>+52 MX</option>
+                    <option value="+82">+82 KR</option>
+                    <option value="+1">+1 US</option>
+                    <option value="+34">+34 ES</option>
+                  </select>
+                  <input id="registerPhoneInput" type="tel" maxlength="24" placeholder="전화번호 / Telefono" autocomplete="tel-national" />
+                </div>
+                <input id="registerPasswordInput" type="password" maxlength="128" placeholder="비밀번호 / Contrasena" autocomplete="new-password" />
+                <input id="registerPasswordConfirmInput" type="password" maxlength="128" placeholder="비밀번호 확인 / Confirmar contrasena" autocomplete="new-password" />
+                <div class="avatar-picker">
+                  <div class="avatar-picker__topline">
+                    <p class="avatar-picker__label">아바타 선택 / Elegir avatar</p>
+                    <p id="avatarLibraryCount" class="avatar-picker__count">16</p>
+                  </div>
+                  <div id="registerAvatarGrid" class="avatar-picker__grid"></div>
+                  <input id="registerAvatarInput" type="hidden" value="" />
+                </div>
+                <button id="registerButton" type="submit">회원가입 / Crear cuenta</button>
+              </div>
+              <p class="auth-inline-copy">
+                <span>이미 계정이 있나요?</span>
+                <span>Ya tienes cuenta?</span>
+                <button id="showLoginButton" type="button" class="auth-link">로그인 / Entrar</button>
+              </p>
+            </form>
+          </div>
+          <p id="accountStatus" class="account-status" hidden aria-live="polite"></p>
+        </section>
+      </section>
+
+      <div id="serviceScreen" class="service-screen" hidden>
+      <section id="serviceHeaderShell" class="account-shell">
+        <div id="accountSessionShell" class="account-session">
+          <div class="account-session__identity">
+            <div class="account-session__profile">
+              <div id="sessionAvatar" class="account-avatar">B</div>
+              <div class="account-session__copy">
+                <div class="account-session__name-row">
+                  <p id="sessionName" class="account-session__name">Bunny User</p>
+                  <button id="editProfileButton" type="button" class="button-ghost button-ghost--compact" aria-label="Edit" title="Edit"></button>
+                </div>
+                <p id="sessionPhone" class="account-session__phone">+82</p>
+              </div>
+            </div>
+            <div class="account-session__meta">
+              <p id="sessionHomeNotice" class="account-session__home-note">"Bunny User" 님의 홈</p>
+              <p id="sessionBio" class="account-session__bio">¡Vida radiante, una vez más!</p>
+            </div>
+          </div>
+          <div class="account-session__actions">
+            <button id="notificationsButton" type="button" class="button-ghost" aria-label="Notifications" title="Notifications"></button>
+            <button id="logoutButton" type="button" class="button-ghost" aria-label="Logout" title="Logout"></button>
+          </div>
+        </div>
+      </section>
+
+      <div id="serviceMainShell" class="service-main-shell" hidden>
+        <section class="profile-shell">
+          <div class="profile-card">
+            <div class="profile-card__header">
+              <div class="profile-card__copy">
+                <p class="eyebrow">My Profile</p>
+              </div>
+              <div class="profile-card__actions">
+                <button id="saveProfileButton" type="button" class="button-secondary" aria-label="Save" title="Save"></button>
+              </div>
+            </div>
+
+            <div class="profile-editor">
+              <div class="profile-editor__summary">
+                <div id="profileAvatarPreview" class="account-avatar profile-editor__avatar">B</div>
+                <div class="profile-editor__summary-copy">
+                  <p id="profilePhoneText" class="profile-editor__phone">52-****-0000</p>
+                  <p id="profileBioPreview" class="profile-editor__note">¡Vida radiante, una vez más!</p>
+                </div>
+              </div>
+
+              <div class="profile-editor__fields">
+                <label class="field field--name">
+                  <span>Name</span>
+                  <input id="displayNameInput" type="text" maxlength="40" placeholder="Name" aria-label="Name" autocomplete="name" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                </label>
+
+                <label class="field field--language">
+                  <span>Language</span>
+                  <select id="languageSelect" aria-label="Language">
+                    <option value="" selected>Language</option>
+                    <option value="ko">한국어</option>
+                    <option value="es">Español</option>
+                  </select>
+                </label>
+
+                <label class="field field--notification">
+                  <span>Notification</span>
+                  <select id="profileNotificationSelect" aria-label="Notification">
+                    <option value="yes" selected>Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </label>
+
+                <label class="field field--bio">
+                  <span>Tag line</span>
+                  <textarea id="profileBioInput" maxlength="160" rows="2" placeholder="Introduce yourself" aria-label="Tag line">¡Vida radiante, una vez más!</textarea>
+                </label>
+              </div>
+            </div>
+
+            <div class="avatar-picker profile-avatar-picker">
+              <div class="avatar-picker__topline">
+                <p class="avatar-picker__label">아이콘 선택</p>
+                <p id="profileAvatarCount" class="avatar-picker__count">16</p>
+              </div>
+              <div id="profileAvatarGrid" class="avatar-picker__grid avatar-picker__grid--profile"></div>
+              <input id="profileAvatarInput" type="hidden" value="" />
+            </div>
+
+            <input id="roomCodeInput" type="hidden" value="" />
+            <p id="setupStatus" class="setup-status" hidden aria-live="polite"></p>
+
+            <section id="invitePreview" class="invite-preview" hidden aria-live="polite">
+              <div class="invite-preview__header">
+                <p class="eyebrow">Quick Join</p>
+                <span id="invitePreviewBadge" class="signal-badge signal-badge--final">Waiting</span>
+              </div>
+              <p id="invitePreviewTitle" class="invite-preview__title">Open an invite link to preview the room.</p>
+              <p id="invitePreviewBody" class="invite-preview__body">
+                When a private invite link is present, this panel will show who is already inside and which side is available next.
+              </p>
+            </section>
+
+            <section class="readiness-panel" aria-live="polite">
+              <div class="readiness-row">
+                <p class="readiness-label">ASR</p>
+                <div id="asrReadiness" class="badge-row">
+                  <span class="badge">Checking...</span>
+                </div>
+              </div>
+              <div class="readiness-row">
+                <p class="readiness-label">Translation</p>
+                <div id="translationReadiness" class="badge-row">
+                  <span class="badge">Checking...</span>
+                </div>
+              </div>
+              <div class="readiness-row">
+                <p class="readiness-label">Browser mic</p>
+                <div id="browserReadiness" class="badge-row">
+                  <span class="badge">Checking...</span>
+                </div>
+              </div>
+              <p id="demoReadiness" class="readiness-copy">
+                Checking whether this browser and backend are ready for a real two-speaker conversation.
+              </p>
+            </section>
+          </div>
+        </section>
+      </div>
+
+      <section id="mypageShell" class="mypage-shell">
+        <div class="mypage-layout">
+          <div class="mypage-list">
+            <div class="mypage-list__header">
+              <h3 class="mypage-list__title">Chatting Lists</h3>
+              <div class="mypage-list__actions">
+                <button id="createHistoryButton" type="button" class="button-secondary">Create</button>
+                <button id="joinHistoryButton" type="button" class="button-secondary" disabled>Join</button>
+                <button id="downloadHistoryButton" type="button" class="button-secondary" disabled>Down</button>
+                <button id="deleteHistoryButton" type="button" class="button-secondary" disabled>Delete</button>
+              </div>
+            </div>
+            <div id="historyList" class="history-list">
+              <article class="history-empty">Select a room from your saved history.</article>
+            </div>
+          </div>
+
+          <div class="mypage-detail">
+            <div id="historyDetail" class="history-detail__content">
+              <article class="history-empty">Select a room to view the conversation.</article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="chatScreenShell" class="room-shell" hidden>
+        <div class="room-system" hidden>
+          <h2 id="roomTitle" class="room-title">Room not connected</h2>
+          <p id="socketStatus" class="status">Room socket idle</p>
+          <p id="metrics" class="metrics">No speech yet</p>
+        </div>
+
+        <div class="room-settings-bar">
+          <div class="room-settings-bar__title-panel">
+            <p id="chatRoomTitleDisplay" class="room-settings-bar__title-display" hidden>
+              <span id="chatRoomTitleText">Room title</span>
+            </p>
+            <input id="chatRoomTitleInput" type="text" maxlength="80" placeholder="Room title" aria-label="Room title" />
+            <button id="chatRoomTitleEditButton" type="button" class="button-ghost button-ghost--compact" aria-label="Edit" title="Edit" hidden></button>
+          </div>
+          <div class="room-settings-bar__right">
+            <label class="field room-settings-bar__field room-settings-bar__field--chat">
+              <select id="chatLanguageSelect" aria-label="Chat language">
+                <option value="" selected>Language</option>
+                <option value="ko">한국어</option>
+                <option value="es">Español</option>
+              </select>
+            </label>
+            <div class="room-settings-bar__actions">
+              <button id="chatInviteButton" type="button" class="button-secondary">Invite</button>
+              <button id="homeRoomButton" type="button" class="button-secondary" aria-label="Home" title="Home"></button>
+              <button id="exitRoomButton" type="button" class="button-secondary" disabled>Exit</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mic-shell">
+          <div class="mic-copy">
+            <p id="micStatus" class="mic-status">Join a room before starting your microphone.</p>
+          </div>
+        </div>
+
+        <section id="textShell" class="text-shell" aria-label="Text message input">
+          <div class="text-shell__copy">
+            <p id="textShellTitle" class="text-shell__title">Type A Message</p>
+            <p id="textStatus" class="text-status">Join a room before sending a text turn.</p>
+          </div>
+          <div class="text-shell__composer">
+            <input id="attachmentInput" type="file" hidden />
+            <textarea
+              id="textTurnInput"
+              rows="2"
+              maxlength="2000"
+              placeholder="Type in Korean or Spanish, then send it to the room."
+              disabled
+            ></textarea>
+            <div class="text-shell__action-stack">
+              <div class="text-shell__actions">
+                <button id="startButton" type="button" class="button-secondary" disabled aria-label="Speak" title="Speak"></button>
+                <button id="sendTextTurnButton" type="button" class="button-secondary" disabled aria-label="Send" title="Send"></button>
+                <button id="emojiPickerButton" type="button" class="button-secondary" disabled aria-label="Emoji" title="Emoji"></button>
+                <button id="sendAttachmentButton" type="button" class="button-secondary" disabled aria-label="Attach file" title="Attach file"></button>
+                <button id="stopButton" class="button-secondary" disabled aria-label="Stop" title="Stop" hidden></button>
+              </div>
+              <div id="emojiPickerPanel" class="emoji-picker" hidden>
+                <div id="emojiPickerGrid" class="emoji-picker__grid"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="turn-guide" aria-live="polite">
+          <p class="eyebrow">Turn Guide</p>
+          <p id="turnGuideTitle" class="turn-guide__title">Waiting for room connection</p>
+          <p id="turnGuideBody" class="turn-guide__body">
+            Join the same room on two browsers, then let one speaker talk while the other listens.
+          </p>
+        </section>
+
+        <div id="liveCaption" class="live-caption" hidden>
+          <div class="live-caption__header">
+            <span class="signal-badge signal-badge--live">LIVE</span>
+            <div id="liveCaptionMeta" class="live-caption__meta"></div>
+          </div>
+          <p id="liveSourceText" class="live-caption__source"></p>
+          <p id="liveTranslatedText" class="live-caption__translation"></p>
+        </div>
+
+        <div id="conversation" class="conversation" aria-live="polite">
+          <article class="empty-state" id="emptyState">
+            <p>No conversation yet.</p>
+            <span>Newest turns appear first, with original and translated text shown together.</span>
+          </article>
+        </div>
+      </section>
+      </div>
+    </main>
+
+    <script src="/static/app.js?v=20260323-ui-service-153" defer></script>
+  </body>
+</html>

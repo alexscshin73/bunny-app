@@ -1,0 +1,18 @@
+{
+  "ko/check_01.wav": {
+    "language": "ko",
+    "text": "지금 번역이 잘 되고 있나요?"
+  },
+  "ko/check_02.wav": {
+    "language": "ko",
+    "text": "다시 한 번 해봅시다."
+  },
+  "es/check_01.wav": {
+    "language": "es",
+    "text": "Se esta haciendo bien la traduccion?"
+  },
+  "es/check_02.wav": {
+    "language": "es",
+    "text": "Vamos a hacerlo una vez mas."
+  }
+}
