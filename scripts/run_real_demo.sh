@@ -3,14 +3,34 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-BUNNY2_DIR="${BUNNY2_DIR:-$(cd "$ROOT_DIR/../bunny2" && pwd)}"
+DEFAULT_BUNNY2_DIR=""
+if [ -d "$ROOT_DIR/../bunny2" ]; then
+  DEFAULT_BUNNY2_DIR="$(cd "$ROOT_DIR/../bunny2" && pwd)"
+fi
+
+BUNNY2_DIR="${BUNNY2_DIR:-$DEFAULT_BUNNY2_DIR}"
+MODEL_ROOT="${BUNNY_MODEL_ROOT:-$ROOT_DIR/models}"
 WHISPER_CLI_PATH="${BUNNY_WHISPER_CPP_BINARY:-$(command -v whisper-cli || true)}"
-UVICORN_BIN="${UVICORN_BIN:-$BUNNY2_DIR/.venv/bin/uvicorn}"
+if [ -z "${UVICORN_BIN:-}" ]; then
+  if [ -x "$ROOT_DIR/.venv/bin/uvicorn" ]; then
+    UVICORN_BIN="$ROOT_DIR/.venv/bin/uvicorn"
+  elif [ -n "$BUNNY2_DIR" ] && [ -x "$BUNNY2_DIR/.venv/bin/uvicorn" ]; then
+    UVICORN_BIN="$BUNNY2_DIR/.venv/bin/uvicorn"
+  else
+    UVICORN_BIN="$(command -v uvicorn || true)"
+  fi
+fi
 HOST="${BUNNY_HOST:-0.0.0.0}"
 PORT="${BUNNY_PORT:-8000}"
-DEFAULT_TURBO_MODEL="$BUNNY2_DIR/models/whisper/ggml-large-v3-turbo.bin"
-DEFAULT_SMALL_MODEL="$BUNNY2_DIR/models/whisper/ggml-small.bin"
+DEFAULT_TURBO_MODEL="$MODEL_ROOT/whisper/ggml-large-v3-turbo.bin"
+DEFAULT_SMALL_MODEL="$MODEL_ROOT/whisper/ggml-small.bin"
 HEALTH_URL="http://127.0.0.1:$PORT/healthz"
+
+if [ ! -d "$MODEL_ROOT" ] && [ -n "$BUNNY2_DIR" ] && [ -d "$BUNNY2_DIR/models" ]; then
+  MODEL_ROOT="$BUNNY2_DIR/models"
+  DEFAULT_TURBO_MODEL="$MODEL_ROOT/whisper/ggml-large-v3-turbo.bin"
+  DEFAULT_SMALL_MODEL="$MODEL_ROOT/whisper/ggml-small.bin"
+fi
 
 ensure_reserved_port_is_available() {
   if ! lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; then
@@ -55,7 +75,7 @@ fi
 export BUNNY_WHISPER_LANGUAGE="${BUNNY_WHISPER_LANGUAGE:-auto}"
 export BUNNY_WHISPER_CPP_NO_GPU="${BUNNY_WHISPER_CPP_NO_GPU:-false}"
 export BUNNY_WHISPER_CPP_USE_VAD="${BUNNY_WHISPER_CPP_USE_VAD:-true}"
-export BUNNY_WHISPER_VAD_MODEL_PATH="${BUNNY_WHISPER_VAD_MODEL_PATH:-$BUNNY2_DIR/models/whisper/ggml-silero-v6.2.0.bin}"
+export BUNNY_WHISPER_VAD_MODEL_PATH="${BUNNY_WHISPER_VAD_MODEL_PATH:-$MODEL_ROOT/whisper/ggml-silero-v6.2.0.bin}"
 export BUNNY_WHISPER_CPP_SUPPRESS_NON_SPEECH="${BUNNY_WHISPER_CPP_SUPPRESS_NON_SPEECH:-true}"
 export BUNNY_WHISPER_CPP_NO_FALLBACK="${BUNNY_WHISPER_CPP_NO_FALLBACK:-false}"
 export BUNNY_WHISPER_THREADS="${BUNNY_WHISPER_THREADS:-4}"
@@ -77,8 +97,8 @@ export BUNNY_PARTIAL_PREVIEW_MS="${BUNNY_PARTIAL_PREVIEW_MS:-2800}"
 export BUNNY_LLM_POSTEDIT_SCOPE="${BUNNY_LLM_POSTEDIT_SCOPE:-final}"
 
 export BUNNY_TRANSLATION_ENGINE="${BUNNY_TRANSLATION_ENGINE:-nllb_ct2}"
-export BUNNY_TRANSLATION_MODEL_PATH="${BUNNY_TRANSLATION_MODEL_PATH:-$BUNNY2_DIR/models/nllb-200-distilled-600M-ct2}"
-export BUNNY_TRANSLATION_TOKENIZER_PATH="${BUNNY_TRANSLATION_TOKENIZER_PATH:-$BUNNY2_DIR/models/nllb-200-distilled-600M-ct2}"
+export BUNNY_TRANSLATION_MODEL_PATH="${BUNNY_TRANSLATION_MODEL_PATH:-$MODEL_ROOT/nllb-200-distilled-600M-ct2}"
+export BUNNY_TRANSLATION_TOKENIZER_PATH="${BUNNY_TRANSLATION_TOKENIZER_PATH:-$MODEL_ROOT/nllb-200-distilled-600M-ct2}"
 export BUNNY_TRANSLATION_DEVICE="${BUNNY_TRANSLATION_DEVICE:-cpu}"
 export BUNNY_TRANSLATION_COMPUTE_TYPE="${BUNNY_TRANSLATION_COMPUTE_TYPE:-int8}"
 export BUNNY_TRANSLATION_INTER_THREADS="${BUNNY_TRANSLATION_INTER_THREADS:-2}"
